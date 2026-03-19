@@ -1,0 +1,13 @@
+site_name: Romi Autonomous Navigation Robot
+
+theme:
+  name: dracula
+  favicon: images/prawn.jpg
+
+nav:
+  - Home: index.md
+  - Mechanical Design: mechanical.md
+  - Electrical Design: electrical.md
+  - Software and Control: software.md
+  - Results and Testing: results.md
+  - Demo Video: video.md
