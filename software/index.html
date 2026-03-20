@@ -330,9 +330,13 @@
 <p>The line-following task processes the nine-sensor IR array and computes a centroid representing the line position. It uses this centroid to compute a steering correction and then updates the left and right wheel reference velocities accordingly. It also manages black and white calibration and can log centroid data during operation.</p>
 <p>The state estimation task combines motor and IMU information to update an observer-based estimate of the robot state. It reads motor inputs, wheel displacements, heading, and yaw rate, applies the discrete-time observer matrices to update the state estimate, then puts the needed variables into different shares. </p>
 <p>The bumper interrupt task handles bump events and debouncing. Its purpose is to prevent repeated false triggers when the robot contacts an obstacle, while still communicating valid bump events to the course logic through a queue and a flag. This task supports more reliable obstacle detection during autonomous navigation.</p>
-<p>The highest-level behavioral task is the obstacle course task. This task implements the finite-state machine that sequences the robot through the course. It manages line-following segments, turns, parking maneuvers, cup displacement, wall interactions, and finish behavior by commanding the lower-level tasks through shared variables and reading back feedback such as heading, displacement, white/black flags, and bump events.</p>
-<h5 id="task-finite-state-machines">Task Finite State Machines</h5>
-<p>Each task is modeled as a finite state machine to ensure proper multitasking. The images below are the finite state machines for each of our tasks.</p>
+<p>The highest-level behavioral task is the obstacle course task. This task implements the finite-state machine that sequences the robot through the course. It manages line-following segments, turns, parking maneuvers, cup displacement, wall interactions, and finish behavior by commanding the lower-level tasks through shared variables and reading back feedback such as heading, displacement, white/black flags, and bump events. Below a drawing of the finite state machine of the obstacle course task.</p>
+<p align="center">
+
+&#x20; <img src="../images/FSM.jpg" width="1200"><br>
+
+</p>
+
 <h3 id="summary">Summary</h3>
 <p>Overall, our software was structured to separate hardware access, system setup, and task-level behavior into clear layers. The driver files provide reusable interfaces to the hardware, <code>main.py</code> integrates the entire system, and the cooperative tasks implement the robot’s control and navigation logic. This modular structure made it easier for us to debug subsystems independently and then combine them into a complete autonomous robot.</p>
 <h1 id="control-system">Control System</h1>
