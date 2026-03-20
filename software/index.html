@@ -186,133 +186,34 @@
 <h5 id="main-sched">Main / sched</h5>
 <p>ipsum</p>
 <h5 id="tasks">Tasks</h5>
-<h3 id="task-communication-table">Task Communication Table</h3>
-<table>
-<thead>
-<tr>
-<th>Variable Name</th>
-<th>Data Type</th>
-<th>Purpose</th>
-<th>Tasks</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GoPort</td>
-<td>uint8 (Share)</td>
-<td>Flag to enable/disable port motor control</td>
-<td>Course ↔ PortControl</td>
-</tr>
-<tr>
-<td>GoStar</td>
-<td>uint8 (Share)</td>
-<td>Flag to enable/disable starboard motor control</td>
-<td>Course ↔ StarControl</td>
-</tr>
-<tr>
-<td>GoLine</td>
-<td>uint8 (Share)</td>
-<td>Command buffer for line-following behavior</td>
-<td>Course ↔ LineFollow</td>
-</tr>
-<tr>
-<td>GoEst</td>
-<td>uint8 (Share)</td>
-<td>Enables state estimation task</td>
-<td>Course ↔ StateEst</td>
-</tr>
-<tr>
-<td>white_flag</td>
-<td>uint8 (Share)</td>
-<td>Indicates line sensors detect mostly white</td>
-<td>LineFollow → Course</td>
-</tr>
-<tr>
-<td>KP</td>
-<td>float (Share)</td>
-<td>Proportional gain for motor PI control</td>
-<td>Course → MotorControl</td>
-</tr>
-<tr>
-<td>KI</td>
-<td>float (Share)</td>
-<td>Integral gain for motor PI control</td>
-<td>Course → MotorControl</td>
-</tr>
-<tr>
-<td>v_ref</td>
-<td>float (Share)</td>
-<td>Base reference velocity</td>
-<td>Course → LineFollow</td>
-</tr>
-<tr>
-<td>v_port</td>
-<td>float (Share)</td>
-<td>Port motor velocity command</td>
-<td>LineFollow → PortControl</td>
-</tr>
-<tr>
-<td>v_star</td>
-<td>float (Share)</td>
-<td>Starboard motor velocity command</td>
-<td>LineFollow → StarControl</td>
-</tr>
-<tr>
-<td>KP_line</td>
-<td>float (Share)</td>
-<td>Gain for line-following controller</td>
-<td>Course → LineFollow</td>
-</tr>
-<tr>
-<td>s_port</td>
-<td>float (Share)</td>
-<td>Port wheel displacement (mm)</td>
-<td>MotorControl → StateEst</td>
-</tr>
-<tr>
-<td>s_star</td>
-<td>float (Share)</td>
-<td>Starboard wheel displacement (mm)</td>
-<td>MotorControl → StateEst</td>
-</tr>
-<tr>
-<td>u_port</td>
-<td>float (Share)</td>
-<td>Port motor voltage input</td>
-<td>MotorControl → StateEst</td>
-</tr>
-<tr>
-<td>u_star</td>
-<td>float (Share)</td>
-<td>Starboard motor voltage input</td>
-<td>MotorControl → StateEst</td>
-</tr>
-<tr>
-<td>V_batt</td>
-<td>float (Share)</td>
-<td>Measured battery voltage</td>
-<td>MotorControl → Course</td>
-</tr>
-<tr>
-<td>BumpFlag</td>
-<td>uint8 (Share)</td>
-<td>Indicates bumper event occurred</td>
-<td>DebounceTask → Course</td>
-</tr>
-<tr>
-<td>psi</td>
-<td>float (Share)</td>
-<td>IMU yaw angle</td>
-<td>StateEst → Course</td>
-</tr>
-<tr>
-<td>BumpExtIntQ</td>
-<td>uint8 (Queue)</td>
-<td>Queue of triggered bump events</td>
-<td>DebounceTask → Course</td>
-</tr>
-</tbody>
-</table>
+<p align="center">
+
+###### Task Communication Table
+
+| Variable Name | Data Type | Purpose | Tasks |
+|--------------|----------|--------|------|
+| GoPort | uint8 (Share) | Flag to enable/disable port motor control | Course ↔ PortControl |
+| GoStar | uint8 (Share) | Flag to enable/disable starboard motor control | Course ↔ StarControl |
+| GoLine | uint8 (Share) | Command buffer for line-following behavior | Course ↔ LineFollow |
+| GoEst | uint8 (Share) | Enables state estimation task | Course ↔ StateEst |
+| white_flag | uint8 (Share) | Indicates line sensors detect mostly white | LineFollow → Course |
+| KP | float (Share) | Proportional gain for motor PI control | Course → MotorControl |
+| KI | float (Share) | Integral gain for motor PI control | Course → MotorControl |
+| v_ref | float (Share) | Base reference velocity | Course → LineFollow |
+| v_port | float (Share) | Port motor velocity command | LineFollow → PortControl |
+| v_star | float (Share) | Starboard motor velocity command | LineFollow → StarControl |
+| KP_line | float (Share) | Gain for line-following controller | Course → LineFollow |
+| s_port | float (Share) | Port wheel displacement (mm) | MotorControl → StateEst |
+| s_star | float (Share) | Starboard wheel displacement (mm) | MotorControl → StateEst |
+| u_port | float (Share) | Port motor voltage input | MotorControl → StateEst |
+| u_star | float (Share) | Starboard motor voltage input | MotorControl → StateEst |
+| V_batt | float (Share) | Measured battery voltage | MotorControl → Course |
+| BumpFlag | uint8 (Share) | Indicates bumper event occurred | DebounceTask → Course |
+| psi | float (Share) | IMU yaw angle | StateEst → Course |
+| BumpExtIntQ | uint8 (Queue) | Queue of triggered bump events | DebounceTask → Course |
+
+</p>
+
 <h3 id="control-system">Control System</h3>
 <p>We implemented a closed-loop control system to enable stable navigation of the obstacle course. The robot uses IR reflectance sensors to detect the position of the line and computes a centroid from the resulting data, which is used to determine a line position error. This error is used to adjust the reference velocities of the left and right motors, allowing the robot to steer back toward the center of the track when deviations occur.</p>
 <p>To ensure accurate motion, we control each motor independently using a proportional–integral (PI) controller. The desired wheel velocities are compared to the actual velocities measured by the quadrature encoders, and the resulting error is used to compute control outputs. The proportional term provides immediate correction, while the integral term reduces steady-state error, allowing for smooth and stable velocity tracking.</p>
