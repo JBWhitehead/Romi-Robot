@@ -20,7 +20,7 @@ The robot follows a track using IR reflectance sensors while detecting obstacles
 
 ### Demo Video
 
-<a href="https://github.com/JBWhitehead/Romi-Robot" target="_blank">
+<a href="https://www.youtube.com/watch?v=WOpUo2VCSVM&embeds_referring_euri=https%3A%2F%2Fjbwhitehead.github.io%2F&source_ve_path=OTY3MTQ" target="_blank">
   Romi in action
 </a>
 
