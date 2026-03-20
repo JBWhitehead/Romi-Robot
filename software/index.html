@@ -186,7 +186,7 @@
 <p>The diagram below shows the overall software task structure and communication flow between the major tasks in the system.</p>
 <p align="center">
 
-&#x20; <img src="../images/tasks.jpg" width="700"><br>
+&#x20; <img src="../images/tasks.jpg" width="800"><br>
 
 </p>
 
@@ -320,13 +320,13 @@
 <h3 id="drivers">Drivers</h3>
 <p>We wrote several hardware interface drivers so that the rest of the code could interact with the robot in a simplified manner. These drivers handle the motors, encoders, line sensors, and IMU. The motor driver class configures the PWM, direction, and sleep pins and provides methods to enable, disable, and command effort to each motor. This keeps the motor control task independent from the low-level pin operations. </p>
 <p>The encoder driver configures timer channels in encoder mode and computes both wheel position and velocity from the quadrature signals. It also handles timer overflow and underflow so the accumulated position remains continuous during motion.</p>
-<p>For line sensing, we implemented both a <code>Sensor</code> class for a single three-channel board and a <code>Sensors</code> wrapper class that combines all three boards into one nine-sensor array. These classes handle ADC sampling, black/white calibration, normalization, and centroid calculation. This arrangement allowed the line-following task to work with a clean centroid value instead of raw ADC readings.</p>
+<p>For line sensing, we implemented both a Sensor class for a single three-channel board and a Sensors wrapper class that combines all three boards into one nine-sensor array. These classes handle ADC sampling, black/white calibration, normalization, and centroid calculation. This arrangement allowed the line-following task to work with a clean centroid value instead of raw ADC readings.</p>
 <p>We also wrote an IMU driver for the BNO055, which manages device initialization, reset, calibration coefficient handling, and data reads over I2C. The state estimation task uses this driver to obtain heading and yaw-rate information.</p>
 <h3 id="main">Main</h3>
 <p>The <code>main.py</code> file serves as the system entry point. It initializes the serial interface, imports all task and driver modules, defines the observer matrices, and creates the hardware objects for timers, motors, encoders, sensors, bumpers, and the IMU. It then creates every share and queue used by the multitasking system and instantiates each task object with the required dependencies. Finally, it appends all tasks to the scheduler with their priorities and periods before entering the main scheduling loop. The scheduler implementation in <code>cotask.py</code> was provided to us, and we used it to run our custom tasks according to priority and timing.</p>
 <h3 id="tasks">Tasks</h3>
 <p>Our robot behavior is implemented through several cooperative tasks, each responsible for a different subsystem. This approach allowed us to divide the overall problem into smaller, more manageable pieces while still coordinating them through shares and queues.</p>
-<p>The two motor control tasks are instances of the same <code>PI_control_task</code> class, one for the port motor and one for the starboard motor. Each task reads encoder feedback, compares measured velocity to the reference value, and applies proportional-integral control to compute a motor effort. These tasks also estimate motor voltage, track wheel displacement, and optionally log step-response data.</p>
+<p>The two motor control tasks are instances of the same PI_control_task class, one for the port motor and one for the starboard motor. Each task reads encoder feedback, compares measured velocity to the reference value, and applies proportional-integral control to compute a motor effort. These tasks also estimate motor voltage, track wheel displacement, and optionally log step-response data.</p>
 <p>The line-following task processes the nine-sensor IR array and computes a centroid representing the line position. It uses this centroid to compute a steering correction and then updates the left and right wheel reference velocities accordingly. It also manages black and white calibration and can log centroid data during operation.</p>
 <p>The state estimation task combines motor and IMU information to update an observer-based estimate of the robot state. It reads motor inputs, wheel displacements, heading, and yaw rate, applies the discrete-time observer matrices to update the state estimate, then puts the needed variables into different shares. </p>
 <p>The bumper interrupt task handles bump events and debouncing. Its purpose is to prevent repeated false triggers when the robot contacts an obstacle, while still communicating valid bump events to the course logic through a queue and a flag. This task supports more reliable obstacle detection during autonomous navigation.</p>
