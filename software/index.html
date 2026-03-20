@@ -180,9 +180,14 @@
     <article>
         <p><h1 id="software-and-control-system">Software and Control System</h1>
 <p>ipsum</p>
-<h4 id="software">Software</h4>
+<h3 id="software">Software</h3>
+<h5 id="drivers">Drivers</h5>
 <p>ipsum</p>
-<h4 id="control-system">Control System</h4>
+<h5 id="main-sched">Main / sched</h5>
+<p>ipsum</p>
+<h5 id="tasks">Tasks</h5>
+<p>ipsum</p>
+<h3 id="control-system">Control System</h3>
 <p>We implemented a closed-loop control system to enable stable navigation of the obstacle course. The robot uses IR reflectance sensors to detect the position of the line and computes a centroid from the resulting data, which is used to determine a line position error. This error is used to adjust the reference velocities of the left and right motors, allowing the robot to steer back toward the center of the track when deviations occur.</p>
 <p>To ensure accurate motion, we control each motor independently using a proportional–integral (PI) controller. The desired wheel velocities are compared to the actual velocities measured by the quadrature encoders, and the resulting error is used to compute control outputs. The proportional term provides immediate correction, while the integral term reduces steady-state error, allowing for smooth and stable velocity tracking.</p>
 <p>Encoder feedback continuously updates the system, ensuring that commanded velocities are achieved and that the robot responds effectively to changes in the environment. Together, the line-following controller and motor control loops allow the robot to maintain accurate trajectory tracking and reliable performance throughout the course.</p>
