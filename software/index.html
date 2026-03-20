@@ -327,13 +327,35 @@
 <h3 id="tasks">Tasks</h3>
 <p>Our robot behavior is implemented through several cooperative tasks, each responsible for a different subsystem. This approach allowed us to divide the overall problem into smaller, more manageable pieces while still coordinating them through shares and queues.</p>
 <p>The two motor control tasks are instances of the same PI_control_task class, one for the port motor and one for the starboard motor. Each task reads encoder feedback, compares measured velocity to the reference value, and applies proportional-integral control to compute a motor effort. These tasks also estimate motor voltage, track wheel displacement, and optionally log step-response data.</p>
-<p>The line-following task processes the nine-sensor IR array and computes a centroid representing the line position. It uses this centroid to compute a steering correction and then updates the left and right wheel reference velocities accordingly. It also manages black and white calibration and can log centroid data during operation.</p>
-<p>The state estimation task combines motor and IMU information to update an observer-based estimate of the robot state. It reads motor inputs, wheel displacements, heading, and yaw rate, applies the discrete-time observer matrices to update the state estimate, then puts the needed variables into different shares. </p>
-<p>The bumper interrupt task handles bump events and debouncing. Its purpose is to prevent repeated false triggers when the robot contacts an obstacle, while still communicating valid bump events to the course logic through a queue and a flag. This task supports more reliable obstacle detection during autonomous navigation.</p>
-<p>The highest-level behavioral task is the obstacle course task. This task implements the finite-state machine that sequences the robot through the course. It manages line-following segments, turns, parking maneuvers, cup displacement, wall interactions, and finish behavior by commanding the lower-level tasks through shared variables and reading back feedback such as heading, displacement, white/black flags, and bump events. Below a drawing of the finite state machine of the obstacle course task.</p>
+<h6 id="motor-control-task-finite-state-machine">Motor Control Task Finite State Machine</h6>
 <p align="center">
 
-&#x20; <img src="../images/FSM.jpg" width="1200"><br>
+&#x20; <img src="../images/motorcontrol.jpg" width="1200"><br>
+
+</p>
+
+<p>The line-following task processes the nine-sensor IR array and computes a centroid representing the line position. It uses this centroid to compute a steering correction and then updates the left and right wheel reference velocities accordingly. It also manages black and white calibration and can log centroid data during operation.</p>
+<h6 id="line-following-task-finite-state-machine">Line-Following Task Finite State Machine</h6>
+<p align="center">
+
+&#x20; <img src="../images/line.jpg" width="1200"><br>
+
+</p>
+
+<p>The state estimation task combines motor and IMU information to update an observer-based estimate of the robot state. It reads motor inputs, wheel displacements, heading, and yaw rate, applies the discrete-time observer matrices to update the state estimate, then puts the needed variables into different shares. </p>
+<h6 id="state-estimator-finite-state-machine">State Estimator Finite State Machine</h6>
+<p align="center">
+
+&#x20; <img src="../images/stateest.jpg" width="1200"><br>
+
+</p>
+
+<p>The bumper interrupt task handles bump events and debouncing. Its purpose is to prevent repeated false triggers when the robot contacts an obstacle, while still communicating valid bump events to the course logic through a queue and a flag. This task supports more reliable obstacle detection during autonomous navigation.</p>
+<p>The highest-level behavioral task is the obstacle course task. This task implements the finite-state machine that sequences the robot through the course. It manages line-following segments, turns, parking maneuvers, cup displacement, wall interactions, and finish behavior by commanding the lower-level tasks through shared variables and reading back feedback such as heading, displacement, white/black flags, and bump events. </p>
+<h6 id="obstacle-course-task-finite-state-machine">Obstacle Course Task Finite State Machine</h6>
+<p align="center">
+
+&#x20; <img src="../images/course.jpg" width="1200"><br>
 
 </p>
 
