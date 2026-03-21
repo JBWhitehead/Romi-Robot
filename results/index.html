@@ -178,30 +178,29 @@
             <!-- block content -->
                 <section class="p-md-5 section-content">
     <article>
-        <p><p># Results and Testing</p>
+        <p><h1 id="results-and-testing">Results and Testing</h1>
 <p>Testing for our Romi was continuous throughout the full 10-week development process. Rather than separating building and validation, we tested each hardware component and software task as it was implemented. Our workflow followed a general progression: motor characterization, controller tuning, line following, and finally IMU-based state estimation. </p>
-<p>&#x20;</p>
 <p>We began with motor testing using step responses to understand system behavior. These tests allowed us to estimate time constants and tune controller gains to achieve a fast, stable response to velocity commands. </p>
-<p>### Example Graph of Starboard Motor Step Test </p>
+<h3 id="example-graph-of-starboard-motor-step-test">Example Graph of Starboard Motor Step Test</h3>
 <p align="center">
 
-\&#x20; <img src="../images/step.jpg" width="500"><br>
+&#x20; <img src="../images/step.jpg" width="500"><br>
 
 </p>
 
 <p>After integrating the IR sensors, we developed and tested our line-following system using a printed black ring the robot was coded to follow. This stage required much iteration, as performance depended heavily on both gain tuning and reliable wiring. To better understand what the robot was actually “seeing,” we logged and plotted the centroid calculated by the sensors over time. These plots were especially useful for separating hardware issues from control issues, which helped us debug much more efficiently. </p>
-<p>### Example Graph of Centroid Logging During Line Following </p>
+<h3 id="example-graph-of-centroid-logging-during-line-following">Example Graph of Centroid Logging During Line Following</h3>
 <p align="center">
 
-\&#x20; <img src="../images/cent.jpg" width="500"><br>
+&#x20; <img src="../images/cent.jpg" width="500"><br>
 
 </p>
 
 <p>With the addition of the IMU, testing became more interactive and physically intuitive. The sensor is highly sensitive to small changes in orientation and rotation, so we validated its performance by manually rotating and tilting the robot while monitoring outputs. We also plotted heading versus time as the robot moved, allowing us to compare measured orientation with expected motion and verify overall accuracy and usability for state estimation.. </p>
-<p>### Example Graph of Heading Over Time </p>
+<h3 id="example-graph-of-heading-over-time">Example Graph of Heading Over Time</h3>
 <p align="center">
 
-\&#x20; <img src="../images/psi.jpg" width="500"><br>
+&#x20; <img src="../images/psi.jpg" width="500"><br>
 
 </p>
 
