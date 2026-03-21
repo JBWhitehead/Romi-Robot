@@ -33,11 +33,11 @@ The task diagram above shows the flow of information between tasks. Below is a l
 | KP_line | float (Share) | Gain for line-following controller | Course → LineFollow |
 | s_port | float (Share) | Port wheel displacement (mm) | MotorControl → StateEst |
 | s_star | float (Share) | Starboard wheel displacement (mm) | MotorControl → StateEst |
-| u_port | float (Share) | Port motor voltage input | MotorControl → StateEst |
-| u_star | float (Share) | Starboard motor voltage input | MotorControl → StateEst |
-| V_batt | float (Share) | Measured battery voltage | MotorControl → Course |
+| u_port | float (Share) | Port motor voltage input (V) | MotorControl → StateEst |
+| u_star | float (Share) | Starboard motor voltage input (V) | MotorControl → StateEst |
+| V_batt | float (Share) | Measured battery voltage (V) | MotorControl → Course |
 | BumpFlag | uint8 (Share) | Indicates bumper event occurred | DebounceTask → Course |
-| psi | float (Share) | IMU yaw angle | StateEst → Course |
+| psi | float (Share) | IMU yaw angle (rad) | StateEst → Course |
 | BumpExtIntQ | uint8 (Queue) | Queue of triggered bump events | DebounceTask → Course |
 
 ### Drivers
@@ -61,19 +61,47 @@ Our robot behavior is implemented through several cooperative tasks, each respon
 
 The two motor control tasks are instances of the same PI_control_task class, one for the port motor and one for the starboard motor. Each task reads encoder feedback, compares measured velocity to the reference value, and applies proportional-integral control to compute a motor effort. These tasks also estimate motor voltage, track wheel displacement, and optionally log step-response data.
 
-The line-following task processes the nine-sensor IR array and computes a centroid representing the line position. It uses this centroid to compute a steering correction and then updates the left and right wheel reference velocities accordingly. It also manages black and white calibration and can log centroid data during operation.
-
-The state estimation task combines motor and IMU information to update an observer-based estimate of the robot state. It reads motor inputs, wheel displacements, heading, and yaw rate, applies the discrete-time observer matrices to update the state estimate, then puts the needed variables into different shares. 
-
-The bumper interrupt task handles bump events and debouncing. Its purpose is to prevent repeated false triggers when the robot contacts an obstacle, while still communicating valid bump events to the course logic through a queue and a flag. This task supports more reliable obstacle detection during autonomous navigation.
-
-The highest-level behavioral task is the obstacle course task. This task implements the finite-state machine that sequences the robot through the course. It manages line-following segments, turns, parking maneuvers, cup displacement, wall interactions, and finish behavior by commanding the lower-level tasks through shared variables and reading back feedback such as heading, displacement, white/black flags, and bump events. Below a drawing of the finite state machine of the obstacle course task.
+###### Motor Control Task Finite State Machine
 
 <p align="center">
 
-&#x20; <img src="../images/FSM.jpg" width="1200"><br>
+&#x20; <img src="../images/motorcontrol.jpg" width="600"><br>
 
 </p>
+
+The line-following task processes the nine-sensor IR array and computes a centroid representing the line position. It uses this centroid to compute a steering correction and then updates the left and right wheel reference velocities accordingly. It also manages black and white calibration and can log centroid data during operation.
+
+###### Line-Following Task Finite State Machine
+
+<p align="center">
+
+&#x20; <img src="../images/line.jpg" width="600"><br>
+
+</p>
+
+
+The state estimation task combines motor and IMU information to update an observer-based estimate of the robot state. It reads motor inputs, wheel displacements, heading, and yaw rate, applies the discrete-time observer matrices to update the state estimate, then puts the needed variables into different shares. 
+
+###### State Estimator Finite State Machine
+
+<p align="center">
+
+&#x20; <img src="../images/stateest.jpg" width="600"><br>
+
+</p>
+
+The bumper interrupt task handles bump events and debouncing. Its purpose is to prevent repeated false triggers when the robot contacts an obstacle, while still communicating valid bump events to the course logic through a queue and a flag. This task supports more reliable obstacle detection during autonomous navigation.
+
+The highest-level behavioral task is the obstacle course task. This task implements the finite-state machine that sequences the robot through the course. It manages line-following segments, turns, parking maneuvers, cup displacement, wall interactions, and finish behavior by commanding the lower-level tasks through shared variables and reading back feedback such as heading, displacement, white/black flags, and bump events. 
+
+###### Obstacle Course Task Finite State Machine
+
+<p align="center">
+
+&#x20; <img src="../images/course.jpg" width="700"><br>
+
+</p>
+
 
 ### Summary
 

@@ -60,7 +60,7 @@ To follow the track, we use three IR reflectance sensor boards, each with three 
 
 
 
-We mounted the sensors near the front underside of the robot and positioned them close to the ground to maximize sensitivity. By distributing the sensors across the width of the robot, we are able to estimate the position of the line relative to the robot and adjust our motion accordingly.
+We mounted the sensors near the front underside of the robot and positioned them close to the ground to maximize sensitivity. The sensor boards were first hot glued to a custom 3D-printed mount, which was then attached to the chassis using nuts and bolts. By distributing the sensors across the width of the robot, we are able to estimate the position of the line relative to the robot and adjust our motion accordingly.
 
 
 
@@ -72,7 +72,7 @@ This arrangement allows us to compute a centroid of the line position and implem
 
 
 
-To detect obstacles, we use bumper switch assemblies mounted on both the left and right sides of the front of the robot. Each side contains three mechanical switches, giving us a total of six bump sensors.
+To detect obstacles, we use bumper switch assemblies mounted on both the left and right sides of the front of the robot. Each side contains three mechanical switches, giving us a total of six bump sensors. The switch assemblies were attached to the chassis with nuts and bolts.
 
 
 
